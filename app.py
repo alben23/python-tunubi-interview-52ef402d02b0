@@ -39,12 +39,14 @@ def answers_post():
     try:
         if request.is_json:
             data = request.json
-            print(data)
-            res = MongoAPI("answers").write(data)
-            status = 200
+            if "answer" in data and "poll_id" in data:
+
+                res = MongoAPI("polls").write(data)
+                status = 200
+            else:
+                res = "No existe la clave 'answer' o la clave 'poll_id' en el JSON"
+                status = 400
         else:
-            print("Error JSON MAL FORMADO o mimetype incorrecto")
-            print(request.json)
             res = "Error JSON MAL FORMADO o mimetype incorrecto"
             status = 400
     except:
@@ -59,12 +61,13 @@ def polls_post():
     try:
         if request.is_json:
             data = request.json
-            print(data)
-            res = MongoAPI("polls").write(data)
-            status = 200
+            if "question" in data:
+                res = MongoAPI("polls").write(data)
+                status = 200
+            else:
+                res = "No existe la clave 'question' en el JSON"
+                status = 400
         else:
-            print("Error JSON MAL FORMADO o mimetype incorrecto")
-            print(request.json)
             res = "Error JSON MAL FORMADO o mimetype incorrecto"
             status = 400
     except:
