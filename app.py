@@ -34,7 +34,7 @@ app = Flask(__name__)
 def base():
     return "status:up"
 
-@app.route('/addAnswer')
+@app.route('/addAnswer',methods=['POST'])
 def answers_post():
     data = request.json
     res = MongoAPI("answers").write(data)
