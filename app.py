@@ -40,9 +40,14 @@ def answers_post():
         if request.is_json:
             data = request.json
             if "answer" in data and "poll_id" in data:
-
-                res = MongoAPI("polls").write(data)
-                status = 200
+                poll_id = data["poll_id"]
+                documento = MongoAPI("polls").find_byid(poll_id)
+                if documento:
+                    res = MongoAPI("polls").write(data)
+                    status = 200
+                else:
+                    res = "No existe en la base el poll_id: {}".format(poll_id)
+                    status = 400
             else:
                 res = "No existe la clave 'answer' o la clave 'poll_id' en el JSON"
                 status = 400
